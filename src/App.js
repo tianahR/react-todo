@@ -3,43 +3,58 @@ import TodoList from "./TodoList";
 import AddTodoForm from "./AddTodoForm";
 
 
+//new function named useSemiPersistentState which will be a custom hook
+ const useSemiPersistentState = () => {
+
+  /**
+   * Update the default state for todoList to read your "savedTodoList" item from localStorage
+      Hint: localStorage.getItem method
+      ---------------
+      Update your default state to parse the value of the "savedTodoList" item
+      Hint: JSON.parse method
+   */
+      const [todoList, setTodoList] = React.useState(JSON.parse(localStorage.getItem("savedTodoList"))||[]);
+
+      /*
+    Define a useEffect React hook with todoList as a dependency
+    Inside the side-effect handler function, save the todoList inside localStorage with the key "savedTodoList"
+    Hint: localStorage.setItem method
+    --------------
+    Update your side-effect function to convert todoList to a string before saving in localStorage
+    Hint: JSON.stringify method
+    */
+  React.useEffect(() => {
+    localStorage.setItem("savedTodoList", JSON.stringify(todoList));
+  }, [todoList]);
+
+  return [todoList, setTodoList];
+  
+
+};
+
+
 
 function App() {
 
-    
-  //a new state variable named newTodo with update function named setNewTodo
-  //const [newTodo, setNewTodo] = React.useState("");
+  const [todoList, setTodoList] = useSemiPersistentState("savedTodoList");
 
-  //Create new state variable named todoList with setter setTodoList and default value of an empty Array
-  const [todoList, setTodoList] = React.useState([]);
-
-  
   // Declare a new function named addTodo that takes newTodo as a parameter
   //  Call the setTodoList state setter and use the spread operator to pass the existing Objects in the todoList Array along with the newTodo Object
   const addTodo = (newTodo)=> {
     setTodoList([...todoList, newTodo]);
   }
 
-
-  // callback handler prop named onAddTodo
-  //  const onAddTodo = (event) => {
-  //    setNewTodo(event.target.title.value);
-  //    };
-     return (
+  return (
       
-      <div>
+      // React Fragment
+      <>
             <h1> Todo List </h1>
             <AddTodoForm  onAddTodo={addTodo}/>
-            {/* <p> Value of newTodo is <strong>{newTodo}</strong></p> */}
-            {/* <TodoList/> */}
-            {/* <AddTodoForm onAddTodo={addTodo} /> */}
             <TodoList todoList={todoList} />
          
-       </div>
-       
-       
-     );
-   }
+      </>
+  );
+}
 
 
 
