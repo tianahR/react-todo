@@ -5,29 +5,14 @@ import AddTodoForm from "./AddTodoForm";
 
 //new function named useSemiPersistentState which will be a custom hook
  const useSemiPersistentState = () => {
+    
+    const [todoList, setTodoList] = React.useState(JSON.parse(localStorage.getItem("savedTodoList"))||[]);
+    
+    React.useEffect(() => {
+        localStorage.setItem("savedTodoList", JSON.stringify(todoList));
+    }, [todoList]);
 
-  /**
-   * Update the default state for todoList to read your "savedTodoList" item from localStorage
-      Hint: localStorage.getItem method
-      ---------------
-      Update your default state to parse the value of the "savedTodoList" item
-      Hint: JSON.parse method
-   */
-      const [todoList, setTodoList] = React.useState(JSON.parse(localStorage.getItem("savedTodoList"))||[]);
-
-      /*
-    Define a useEffect React hook with todoList as a dependency
-    Inside the side-effect handler function, save the todoList inside localStorage with the key "savedTodoList"
-    Hint: localStorage.setItem method
-    --------------
-    Update your side-effect function to convert todoList to a string before saving in localStorage
-    Hint: JSON.stringify method
-    */
-  React.useEffect(() => {
-    localStorage.setItem("savedTodoList", JSON.stringify(todoList));
-  }, [todoList]);
-
-  return [todoList, setTodoList];
+    return [todoList, setTodoList];
   
 
 };
@@ -44,13 +29,18 @@ function App() {
     setTodoList([...todoList, newTodo]);
   }
 
+  const removeTodo = (id) => {
+    const removeItem = todoList.filter((todo) => todo.id !== id);
+    setTodoList(removeItem);
+  };
+
   return (
       
       // React Fragment
       <>
             <h1> Todo List </h1>
             <AddTodoForm  onAddTodo={addTodo}/>
-            <TodoList todoList={todoList} />
+            <TodoList todoList={todoList} onRemoveTodo={removeTodo}/>
          
       </>
   );
