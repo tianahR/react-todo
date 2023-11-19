@@ -1,8 +1,6 @@
 import React from "react" ;
+import InputWithLabel from "./InputWithLabel";
 
-
-// update props to use destructuring
-//const AddTodoForm = (props)=> {
 const AddTodoForm = ({onAddTodo})=> {
 
     // Create new state variable named todoTitle with setter setTodoTitle
@@ -24,10 +22,6 @@ const AddTodoForm = ({onAddTodo})=> {
 
     const handleAddTodo = (event)=>{
         event.preventDefault();
-        //const todoTitle = event.target.title.value;        
-        //console.log(todoTitle );
-        //props.onAdd(event);
-        
         
         // update props to use destructuring
         //props.onAddTodo({
@@ -44,19 +38,14 @@ const AddTodoForm = ({onAddTodo})=> {
     
     return (
         <form onSubmit={handleAddTodo}>
-            <label htmlFor="todoTitle">Title </label>
-
-            {/* Modify the <input> element to be a controlled input
-            Add value prop equal to todoTitle from component props
-            Add onChange prop equal to handleTitleChange function reference */}
-            <input 
-                id="todoTitle" 
-                type="text" 
-                name="title" 
-                value={todoTitle}
-                onChange={handleTitleChange}
-            />
-            <button>Add </button>
+            <InputWithLabel
+                todoTitle={todoTitle}
+                handleTitleChange={handleTitleChange}
+            >
+                <strong> Title: </strong>
+            </InputWithLabel>
+            &nbsp;
+            <button> Add </button>
         </form>
     );
 }
