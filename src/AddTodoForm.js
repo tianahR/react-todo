@@ -25,10 +25,12 @@ const AddTodoForm = ({onAddTodo})=> {
         
         // update props to use destructuring
         //props.onAddTodo({
-        onAddTodo({
-            title: todoTitle,
-            id: Date.now(),
-          });
+        // onAddTodo({
+        //     title: todoTitle,
+        //     id: Date.now(),
+        //   });
+        onAddTodo(todoTitle);
+        // console.log("clik") ;
 
         //   inside handleAddTodo, remove the reset() method and replace it with logic to reset the todoTitle state to an empty String
         //event.target.reset();
