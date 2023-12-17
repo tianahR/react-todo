@@ -1,6 +1,8 @@
 import React from 'react';
 import TodoList from "./TodoList";
 import AddTodoForm from "./AddTodoForm";
+//  Import BrowserRouter, Routes, and Route from react-router-dom
+import {BrowserRouter, Routes, Route} from "react-router-dom";
 
 
 const App = () => {
@@ -186,23 +188,51 @@ const App = () => {
         // ----------------
 
         return (
-            
-            // React Fragment
-            <>
-                  <h1> Todo List </h1>
-                  <AddTodoForm  onAddTodo={addTodo}/>
-                  
+
+          // Wrap existing JSX within new BrowserRouter component
+            <BrowserRouter>
+                {/* Inside BrowserRouter, wrap existing JSX within new Routes component */}
+                <Routes>
+                  {/* Inside Routes, wrap existing JSX within new Route component with prop path equal to the root path ("/") */}
+                  <Route 
+                      path ="/"
+                      element = { 
+                          <>
+                                <h1> Todo List </h1>
+                                <AddTodoForm  onAddTodo={addTodo}/>
+                                
+
+                                
+                                {/* Using a ternary operator inside JSX, 
+                                if isLoading is true render the loading message, otherwise render the TodoList component */}
+                                {isLoading ? (
+                                    <p>Loading...</p>
+                                ) : (
+                                    <TodoList todoList={todoList} onRemoveTodo={removeTodo}/>
+                                )}
+                            
+                          </>
+                      }
+                  />
+
+                  {/* Add New Route */}
+                  {/*  Below the Route component, create a new Route with path "/new" */}
+                  {/* Inside the Route component, create a level-one heading with text "New Todo List" */}
+                  <Route 
+                    path ="/new"
+                    element = {
+                      <h1> New Todo List </h1>
+                    }/>
+                      
 
                   
-                  {/* Using a ternary operator inside JSX, 
-                  if isLoading is true render the loading message, otherwise render the TodoList component */}
-                  {isLoading ? (
-                      <p>Loading...</p>
-                  ) : (
-                      <TodoList todoList={todoList} onRemoveTodo={removeTodo}/>
-                  )}
-              
-            </>
+                    
+
+                </Routes>
+                
+            </BrowserRouter>
+            
+            
         );
 }
 
