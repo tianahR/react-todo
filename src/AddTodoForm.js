@@ -1,5 +1,8 @@
 import React from "react" ;
 import InputWithLabel from "./InputWithLabel";
+import styles from "./TodoListItem.module.css";
+import { ReactComponent as Add } from "./add.svg";
+
 
 const AddTodoForm = ({onAddTodo})=> {
 
@@ -47,7 +50,7 @@ const AddTodoForm = ({onAddTodo})=> {
                 <strong> Title: </strong>
             </InputWithLabel>
             &nbsp;
-            <button> Add </button>
+            <button className={styles.AddTodoFormButton}>  <Add/> </button>
         </form>
     );
 }
