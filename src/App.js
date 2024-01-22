@@ -3,6 +3,11 @@ import TodoList from "./TodoList";
 import AddTodoForm from "./AddTodoForm";
 //  Import BrowserRouter, Routes, and Route from react-router-dom
 import {BrowserRouter, Routes, Route} from "react-router-dom";
+import styles from "./TodoListItem.module.css";
+// import background from "./img/todolist.png";
+
+
+
 
 
 const App = () => {
@@ -191,38 +196,46 @@ const App = () => {
 
           // Wrap existing JSX within new BrowserRouter component
             <BrowserRouter>
+                
                 {/* Inside BrowserRouter, wrap existing JSX within new Routes component */}
                 <Routes>
-                  {/* Inside Routes, wrap existing JSX within new Route component with prop path equal to the root path ("/") */}
-                  <Route 
-                      path ="/"
-                      element = { 
-                          <>
-                                <h1> Todo List </h1>
-                                <AddTodoForm  onAddTodo={addTodo}/>
-                                
+                        {/* Inside Routes, wrap existing JSX within new Route component with prop path equal to the root path ("/") */}
 
-                                
-                                {/* Using a ternary operator inside JSX, 
-                                if isLoading is true render the loading message, otherwise render the TodoList component */}
-                                {isLoading ? (
-                                    <p>Loading...</p>
-                                ) : (
-                                    <TodoList todoList={todoList} onRemoveTodo={removeTodo}/>
-                                )}
-                            
-                          </>
-                      }
-                  />
+                        {/* <Route path='/' element={<Home /> }/> */}
+    
+                        <Route 
+                            path ="/"
+                            element = { 
+                                // <div className={styles.Container} style={{ backgroundImage: `url(${background})` }}>
+                                <div className={styles.Container} >
+                                      <h1 className={styles.MainHeader}> Todo List </h1>
+                                      <AddTodoForm  onAddTodo={addTodo}/>
+                                      
 
-                  {/* Add New Route */}
-                  {/*  Below the Route component, create a new Route with path "/new" */}
-                  {/* Inside the Route component, create a level-one heading with text "New Todo List" */}
-                  <Route 
-                    path ="/new"
-                    element = {
-                      <h1> New Todo List </h1>
-                    }/>
+                                      
+                                      {/* Using a ternary operator inside JSX, 
+                                      if isLoading is true render the loading message, otherwise render the TodoList component */}
+                                      {isLoading ? (
+                                          <p>Loading...</p>
+                                      ) : (
+                                          <TodoList todoList={todoList} onRemoveTodo={removeTodo}/>
+                                      )}
+                                  
+                                </div>
+                            }
+                        />
+
+                        {/* Add New Route */}
+                        {/*  Below the Route component, create a new Route with path "/new" */}
+                        {/* Inside the Route component, create a level-one heading with text "New Todo List" */}
+                        <Route 
+                          path ="/new"
+                          element = {
+                            <h1> New Todo List </h1>
+                          }/>
+
+
+                    
                       
 
                   
