@@ -1,6 +1,7 @@
 import React from "react";
-import styles from "./TodoListItem.module.css";
-import { ReactComponent as Remove } from "./delete.svg";
+import styles from "../TodoListItem.module.css";
+import { ReactComponent as Remove } from "../delete.svg";
+import PropTypes from "prop-types";
 
 const TodoListItem = ({ todo, onRemoveTodo }) =>{
   return (
@@ -11,5 +12,10 @@ const TodoListItem = ({ todo, onRemoveTodo }) =>{
     </li>
   );
 }
+
+TodoListItem.propTypes = {
+  todo: PropTypes.object,
+  removeTodo: PropTypes.func.isRequired,
+};
 
 export default TodoListItem ;
