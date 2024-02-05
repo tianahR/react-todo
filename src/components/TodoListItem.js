@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "../TodoListItem.module.css";
+import styles from "../styles/TodoListItem.module.css";
 import { ReactComponent as Remove } from "../delete.svg";
 import PropTypes from "prop-types";
 
@@ -8,7 +8,7 @@ const TodoListItem = ({ todo, onRemoveTodo }) =>{
     <li className={styles.ListItem}>
       {todo.title} 
       &nbsp;
-      <button onClick={() => onRemoveTodo(todo.id) } className={styles.RemoveButton}><Remove/></button>
+      <button onClick={() => onRemoveTodo(todo.id) } ><Remove/></button>
     </li>
   );
 }
