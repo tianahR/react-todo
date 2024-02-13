@@ -1,6 +1,6 @@
 import React from "react" ;
 import InputWithLabel from "./InputWithLabel";
-import styles from "../styles/TodoListItem.module.css";
+// import styles from "../styles/TodoListItem.module.css";
 import { ReactComponent as Add } from "../add.svg";
 import PropTypes from "prop-types"; //Import PropTypes from the "prop-types" package
 
@@ -17,6 +17,7 @@ const AddTodoForm = ({onAddTodo})=> {
 
     const handleTitleChange = (event) =>{
         const newTodoTitle = event.target.value;
+        
         setTodoTitle(newTodoTitle);
       }
 
@@ -26,6 +27,10 @@ const AddTodoForm = ({onAddTodo})=> {
 
     const handleAddTodo = (event)=>{
         event.preventDefault();
+
+        if (!todoTitle) {
+            alert("Enter your Todo please");
+        } else {
         
         // update props to use destructuring
         //props.onAddTodo({
@@ -39,6 +44,7 @@ const AddTodoForm = ({onAddTodo})=> {
         //   inside handleAddTodo, remove the reset() method and replace it with logic to reset the todoTitle state to an empty String
         //event.target.reset();
         setTodoTitle("");
+        }
         
     };
     
@@ -47,18 +53,19 @@ const AddTodoForm = ({onAddTodo})=> {
             <InputWithLabel
                 todoTitle={todoTitle}
                 handleTitleChange={handleTitleChange}
+                
             >
                 <strong> Title: </strong>
             </InputWithLabel>
             &nbsp;
-            <button className={styles.AddTodoFormButton}>  <Add/> </button>
+            <button >  <Add/> </button>
         </form>
     );
 }
 
 // Add AddTodoForm prop types
 AddTodoForm.propTypes = {
-    onAddTodo: PropTypes.func.isRequired
+    onAddTodo: PropTypes.func
 }
 
 

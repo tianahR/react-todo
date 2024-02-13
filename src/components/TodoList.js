@@ -1,10 +1,11 @@
 import React from "react";
 import TodoListItem from "./TodoListItem";
 import PropTypes from "prop-types";
+import styles from "../styles/TodoListItem.module.css";
 
 const TodoList = ({ todoList, onRemoveTodo })=> {
   return (
-    <div>
+    <div className={styles.List}>
       <ul>
         {todoList.map(function (item) {
           return (
@@ -13,12 +14,15 @@ const TodoList = ({ todoList, onRemoveTodo })=> {
         })}
       </ul>
     </div>
+
+
+    
   );
 }
 
 TodoList.propTypes = {
   todoList: PropTypes.array,
-  removeTodo: PropTypes.func.isRequired,
+  removeTodo: PropTypes.func,
 };
 
 

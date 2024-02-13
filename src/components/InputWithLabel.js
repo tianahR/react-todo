@@ -27,11 +27,11 @@ const InputWithLabel = (props) => {
   )};
 
   InputWithLabel.propTypes = {
-    id: PropTypes.string.isRequired,
-    todoTitle: PropTypes.string.isRequired,
-    name:PropTypes.string.isRequired,
-    handleTitleChange: PropTypes.func.isRequired,
-    children: PropTypes.string
+    id: PropTypes.string,
+    todoTitle: PropTypes.string,
+    name:PropTypes.string,
+    handleTitleChange: PropTypes.func,
+    children: PropTypes.object
 };
 
   export default InputWithLabel;
