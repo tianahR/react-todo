@@ -1,15 +1,20 @@
 import React from 'react';
-import TodoView from "./TodoView";
+import AddTodoForm from "../components/AddTodoForm";
+import styles from "../styles/TodoContainer.module.css";
+import SortingTodoList from "./SortingTodoList";
+import PropTypes from "prop-types";
 
 
-const TodoContainer = () => {
+const TodoContainer = ({tableName,titlePage}) => {
 
-    const [todoList, setTodoList] = React.useState([]);
+   const [todoList, setTodoList] = React.useState([]);
+
+    
 
     // Add Loading state
     const [isLoading, setIsLoading] = React.useState(true); 
 
-    const [isSortedAscending, setIsSortAscending] = React.useState(true); //sort with Javascript
+   
 
 
     // inside the fetchData function, declare an empty object variable named options
@@ -17,7 +22,7 @@ const TodoContainer = () => {
   //  add a headers key with an object {Authorization:Bearer ${process.env.REACT_APP_AIRTABLE_API_TOKEN}}`
 
 
-    const fetchData = async () => {
+    const fetchData = async (tableNameParam) => {
 
       const options = {
         method: "GET",
@@ -27,14 +32,18 @@ const TodoContainer = () => {
       };
 
       // Sort by Airtable view order
-      // const url = `https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/${process.env.REACT_APP_TABLE_NAME}
-      // ?view=Grid%20view `;
+      //  const url = `https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/${process.env.REACT_APP_TABLE_NAME}
+      //  ?view=Grid%20view `;
+
+      const url = `https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/${tableNameParam}
+        ?view=Grid%20view `;
+        
 
       // Sort by Airtable field
-      // const url = `https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/${process.env.REACT_APP_TABLE_NAME}
-      // ?sort[0][field]=title&sort[0][direction]=asc `;
+      //  const url = `https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/${process.env.REACT_APP_TABLE_NAME}
+      //  ?sort[0][field]=title&sort[0][direction]=asc `;
 
-      const url = `https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/${process.env.REACT_APP_TABLE_NAME}`;
+      // const url = `https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/${process.env.REACT_APP_TABLE_NAME}`;
       
 
       try {
@@ -52,12 +61,13 @@ const TodoContainer = () => {
                 const newTodo = {
                   title: data.fields.title,
                   id: data.id,
+                  createdAt:data.createdTime
                 };
-                // console.log(todos);
+                //  console.log(todos);
                 return newTodo;
               });
 
-              // console.log(todos);
+              //  console.log(todos);
 
               setTodoList(todos);
               setIsLoading(false);
@@ -70,11 +80,10 @@ const TodoContainer = () => {
     };
 
     React.useEffect(() => {
-      fetchData();
-    }, []);
+      fetchData(tableName);
+    }, [tableName]);
 
-    
-
+  
 
       // Inside the second useEffect hook (with todoList dependency), 
       // add an if statement to check that isLoading is false before setting localStorage
@@ -101,10 +110,13 @@ const TodoContainer = () => {
         const airtableData = {
           fields: {
             title: todo,
+            
           },
         };
 
-        const url = `https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/Default`;
+        // const url = `https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/Default`;
+        const url = `https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/${tableName}`;
+        
 
         const options = {
             method: "POST",
@@ -125,10 +137,8 @@ const TodoContainer = () => {
                 throw new Error(message);
               }
               
-              fetchData(); //load after add Todo
-              
-
-              
+              fetchData(tableName); //load after add Todo
+            
 
               const dataResponse = await response.json();
               // console.log("return "+JSON.stringify(dataResponse));
@@ -157,9 +167,10 @@ const TodoContainer = () => {
     // ----------------
 
     const removeTodo = async (id) => {
+    
 
-      const url = `https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/Default/${id}`;
-      console.log(url);
+      const url = `https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/${tableName}/${id}`;
+      //console.log(url);
 
       const options = 
       {
@@ -177,13 +188,8 @@ const TodoContainer = () => {
               throw new Error(`Error has occurred: ${response.status}`);
           }
           
-          
-          fetchData(); //load after remove
+          fetchData(tableName); //load after remove
 
-          
-
-          
-  
           return await response.json();
       } 
       catch (error) {
@@ -191,40 +197,81 @@ const TodoContainer = () => {
           return null;
       }
   };
-    // ----------------
-    // sort with Javascript
-
-    const handleToggleSortDirection = () => {
-         setIsSortAscending(!isSortedAscending);
-    };
-    
-      const sortedTodos = [...todoList].sort((objectA, objectB) => {
-        const titleA = objectA.title ?? "";
-        const titleB = objectB.title ?? "";
-        if (isSortedAscending) {
-          return titleA.localeCompare(titleB);
-        } else return titleB.localeCompare(titleA);
-      });
 
 
+  ///// UPDATE TODO
+//   const updateTodo = async (id, todo) => {
+
+//     const airtableData = {
+//       fields: {
+//         title: todo, 
+//       },
+//     };
+
+//     const url = `https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/${tableName}/${id}`;
+//     //console.log(url);
+
+//     const options = 
+//     {
+//       method: "PATCH",
+//       headers: {
+//           "Authorization": `Bearer ${process.env.REACT_APP_AIRTABLE_API_TOKEN}`,
+//           "Content-Type": "application/json"
+//       },
+//       body: JSON.stringify(airtableData),
+//     }
+
+//     try {
+//         const response = await fetch(url, options);
+
+//         if (!response.ok) {
+//             throw new Error(`Error has occurred: ${response.status}`);
+//         }
+        
+//         fetchData(tableName); //load after remove
+
+//         return await response.json();
+//     } 
+//     catch (error) {
+//         console.log(error.message);
+//         return null;
+//     }
+// };
+
+
+// -------------------------------
+  
+    //console.log(tableName);
 
     return (
+      <div className={styles.Container}>
 
-        <TodoView
-        onAddTodo={addTodo}
-        removeTodo={removeTodo}
-        isLoading={isLoading}
-        // todoList = {todoList}
-        isSortedAscending={isSortedAscending}
-        sortedTodos={sortedTodos}
-        handleToggleSortDirection={handleToggleSortDirection}
-      />
-    );
-        
-        
+          <h1 className={styles.MainHeader}>{titlePage} </h1>
+
+          <AddTodoForm onAddTodo={addTodo} />
+              {isLoading ? (
+                   <p className={styles.Loading}>Loading...</p>
+              ):(
+                  <SortingTodoList 
+                      todoList={todoList} 
+                      onRemoveTodo={removeTodo} 
+                      //onRemoveTodo={updateTodo} 
+                  />
+              )
+          }
+      </div>
+  );
+
+   
     
 }
 
 
 
 export default TodoContainer;
+
+TodoContainer.propTypes = {
+  tablename: PropTypes.string ,
+  titlePage: PropTypes.string
+  
+}
